@@ -21,6 +21,8 @@ body {
         0 0 20px rgba(255, 255, 255, 0.3),
         0 0 40px rgba(255, 255, 255, 0.2),
         0 0 60px rgba(255, 255, 255, 0.1);
+    transition: all 0.8s ease-out; 
+    
 }
 
 .container span {
@@ -65,6 +67,10 @@ body {
     background: #da5037;
     border-radius: 50%;
 }
+.container.minimized {
+    transform: translateY(-250px) scale(0.5);
+    margin-bottom: -100px;
+}
 
 @keyframes anim {
     0% {
@@ -82,14 +88,6 @@ body {
     100% {
         transform: rotate(360deg);
     }
-}
-.welcome-msg{
-    font-size: 15px;
-    margin-top: auto;
-    color: #fff8dc;
-    position: relative;
-    
-    bottom: 80%;
 }
 
 .chat-input {
@@ -175,4 +173,18 @@ body {
     border: 1px solid #fff8dc; /* Border matches text color */
 
     margin-right: auto;
+}
+
+.welcome-msg {
+    font-size: 15px;
+    margin-top: auto;
+    color: #fff8dc;
+    position: relative;
+    bottom: 80%;
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
+}
+
+.welcome-msg.fade-out {
+    opacity: 0;
 }
