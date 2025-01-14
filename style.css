@@ -5,9 +5,8 @@ body {
     background: #da5037;
     margin: 0;
     overflow: hidden;
-
     font-family: "Share Tech Mono", monospace;
-    color: #fff8dc; /* Whitish-yellow text */
+    color: #fff8dc;
 }
 
 .container {
@@ -21,40 +20,7 @@ body {
         0 0 20px rgba(255, 255, 255, 0.3),
         0 0 40px rgba(255, 255, 255, 0.2),
         0 0 60px rgba(255, 255, 255, 0.1);
-    transition: all 0.8s ease-out; 
-    
-}
-
-.container span {
-    position: absolute;
-    top: -50px;
-    left: -50px;
-    width: 300px;
-    height: 300px;
-    background: linear-gradient(#f1d3a1, #e3dbd9, #e6eff6, #89b4c4, #548999);
-    border-radius: 50%;
-    transform-origin: center;
-    animation: spin 3s linear infinite;
-}
-
-.container span:nth-child(1) {
-    filter: blur(6px);
-    animation-delay: -0.75s;
-}
-
-.container span:nth-child(2) {
-    filter: blur(11px);
-    animation-delay: -1.5s;
-}
-
-.container span:nth-child(3) {
-    filter: blur(25px);
-    animation-delay: -2.25s;
-}
-
-.container span:nth-child(4) {
-    filter: blur(60px);
-    animation-delay: -3s;
+    transition: all 0.5s ease-out;
 }
 
 .container::after {
@@ -67,39 +33,27 @@ body {
     background: #da5037;
     border-radius: 50%;
 }
+
 .container.minimized {
     transform: translateY(-250px) scale(0.5);
     margin-bottom: -100px;
 }
 
 @keyframes anim {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 .chat-input {
     position: absolute;
     bottom: 10%;
-    width: 50%;
-    transform: translateX(-50%);        
+    left: 50%;
+    transform: translateX(-50%);
     width: 50%;
     height: 40px;
-    background: transparent; /* Transparent background */
-    color: #fff8dc; /* Text color */
-    border: 1px solid #fff8dc; /* Border matches text color */
+    background: transparent;
+    color: #fff8dc;
+    border: 1px solid #fff8dc;
     border-radius: 20px;
     font-size: 16px;
     padding: 10px;
@@ -110,15 +64,16 @@ body {
 }
 
 .chat-input::placeholder {
-    color: #fff8dc; /* Placeholder color */
+    color: #fff8dc;
     opacity: 0.7;
     font-style: italic;
 }
 
 .chat-input:focus {
-    border-color: #f1d3a1; /* Highlight border on focus */
+    border-color: #f1d3a1;
     box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
 }
+
 .messages-container {
     position: absolute;
     top: 50%;
@@ -130,9 +85,9 @@ body {
     display: flex;
     flex-direction: column;
     z-index: 10;
-
     scrollbar-width: thin;
     scrollbar-color: rgba(255,255,255,0.3) transparent;
+    
 }
 
 .messages-container::-webkit-scrollbar {
@@ -149,42 +104,56 @@ body {
     padding: 10px;
     border-radius: 15px;
     align-self: flex-start;
-
     max-width: 80%;
     word-wrap: break-word;  
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 0.5s ease-out forwards;
 }
-
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 .user-message {
-    background-color: #fff8dc;
     color: #fff8dc;
     align-self: flex-end;
-    background: transparent; /* Transparent background */
-    border: 1px solid #fff8dc; /* Border matches text color */
-
+    background: transparent;
+    border: 1px solid #fff8dc;
     margin-left: auto;
-    
 }
 
 .bot-message {
-    background-color: #fff8dc;
     color: #fff8dc;
     align-self: flex-start;
-    background: transparent; /* Transparent background */
-    border: 1px solid #fff8dc; /* Border matches text color */
-
+    background: transparent;
+    border: 1px solid #fff8dc;
     margin-right: auto;
+    animation-delay: 0.2s;
 }
 
 .welcome-msg {
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translateX(-50%);
     font-size: 15px;
-    margin-top: auto;
     color: #fff8dc;
-    position: relative;
-    bottom: 80%;
     opacity: 1;
-    transition: opacity 0.5s ease-out;
+    transition: opacity 0.5s ease-in-out;
+    text-align: center;
 }
 
 .welcome-msg.fade-out {
     opacity: 0;
+}
+.container-small {
+    width: 100px !important;  
+    height: 100px !important; 
+    margin-top: -150px !important;
 }

@@ -61,7 +61,7 @@ class ChatUI {
       this.isFirstMessage = false;
     }
 
-    // User message bubble
+    // User message 
     this.createMessageBubble(userMessage, 'user');
 
     // Bot response
@@ -77,8 +77,7 @@ class ChatUI {
   fadeOutWelcomeMessage() {
     
     this.welcomeMsg.classList.add('fade-out');
-    
-
+    this.chatContainer.classList.add('container-small');    
     setTimeout(() => {
       this.welcomeMsg.style.display = 'none';
     }, 500); 
