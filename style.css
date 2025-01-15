@@ -80,7 +80,7 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 50%;
-    height: 40%;
+    height: 50%;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
