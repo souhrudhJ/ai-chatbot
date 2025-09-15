@@ -1,42 +1,10 @@
-class ChatBot {
-  constructor() {
-    this.responses = {
-      greeting: [
-        "Hello there! How can I help you today?",
-        "Hi! What's on your mind?",
-        "Greetings! I'm ready to chat."
-      ],
-      default: [
-        "That's interesting! Tell me more.",
-        "I'm listening. What else would you like to share?",
-        "Could you elaborate on that?"
-      ]
-    };
-  }
-
-  generateResponse(userMessage) {
-    const message = userMessage.toLowerCase().trim();
-
-    if (message.includes('hello') || message.includes('hi')) {
-      return this.getRandomResponse('greeting');
-    }
-
-    return this.getRandomResponse('default');
-  }
-
-  getRandomResponse(category) {
-    const responses = this.responses[category];
-    return responses[Math.floor(Math.random() * responses.length)];
-  }
-}
-
 class ChatUI {
   constructor() {
-    this.chatBot = new ChatBot();
     this.chatInput = document.querySelector('.chat-input');
     this.chatContainer = document.querySelector('.container');
     this.welcomeMsg = document.querySelector('.welcome-msg');
     this.isFirstMessage = true;
+    this.messagesContainer = document.querySelector('.messages-container');
 
     this.setupEventListeners();
   }
@@ -50,32 +18,74 @@ class ChatUI {
     });
   }
 
-  handleUserMessage() {
+  async handleUserMessage() {
     const userMessage = this.chatInput.value.trim();
 
     if (userMessage === '') return;
-
     
     if (this.isFirstMessage) {
       this.fadeOutWelcomeMessage();
       this.isFirstMessage = false;
     }
 
-    // User message 
+    // Display user message
     this.createMessageBubble(userMessage, 'user');
-
-    // Bot response
-    const botResponse = this.chatBot.generateResponse(userMessage);
-    setTimeout(() => {
-      this.createMessageBubble(botResponse, 'bot');
-    }, 500);
-
     
+    // Show thinking indicator
+    const thinkingBubble = this.createThinkingBubble();
+    
+    try {
+      // Send request to your Python backend
+      const response = await this.fetchGeminiResponse(userMessage);
+      
+      // Remove thinking bubble
+      this.messagesContainer.removeChild(thinkingBubble);
+      
+      // Display bot response
+      this.createMessageBubble(response, 'bot');
+    } catch (error) {
+      // Remove thinking bubble
+      this.messagesContainer.removeChild(thinkingBubble);
+      
+      // Display error message
+      this.createMessageBubble("Sorry, I'm having trouble connecting right now. Please try again later.", 'bot');
+      console.error("Error fetching response:", error);
+    }
+
+    // Clear input field
     this.chatInput.value = '';
   }
 
-  fadeOutWelcomeMessage() {
+  async fetchGeminiResponse(message) {
+    // Replace with your actual backend endpoint
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ prompt: message })
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data.response;
+  }
+
+  createThinkingBubble() {
+    const thinkingBubble = document.createElement('div');
+    thinkingBubble.classList.add('message-bubble', 'bot-message', 'thinking');
+    thinkingBubble.innerHTML = '<span class="dot"></span><span class="dot"></span><span class="dot"></span>';
     
+    this.messagesContainer.appendChild(thinkingBubble);
+    this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
+    
+    return thinkingBubble;
+  }
+
+  fadeOutWelcomeMessage() {
     this.welcomeMsg.classList.add('fade-out');
     this.chatContainer.classList.add('container-small');    
     setTimeout(() => {
@@ -88,9 +98,8 @@ class ChatUI {
     messageBubble.classList.add('message-bubble', `${sender}-message`);
     messageBubble.textContent = message;
 
-    const messagesContainer = document.querySelector('.messages-container');
-    messagesContainer.appendChild(messageBubble);
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    this.messagesContainer.appendChild(messageBubble);
+    this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
   }
 }
 
