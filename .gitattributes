@@ -1,2 +1,6 @@
-samanthaChat.html linguist-language=HTML
-index.html linguist-language=HTML
+*.css linguist-detectable=true
+*.css linguist-language=CSS
+
+*.py linguist-detectable=false
+
+*.html linguist-language=HTML
