@@ -16,12 +16,12 @@ Tech Stack
 Backend: Flask (Python web framework)
 AI Model: DialoGPT-small (via Transformers library)
 Deep Learning: PyTorch
-Frontend: Basic HTML/JS (assumes index.html and samanthaChat.html for UI)
+Frontend: Basic HTML/CSS/JS  
 
 Installation
 
 Clone the Repository:
-textgit clone https://github.com/souhrudhJ/ai-chatbot.git
+git clone https://github.com/souhrudhJ/ai-chatbot.git
 cd ai-chatbot
 
 Create a Virtual Environment (recommended):
